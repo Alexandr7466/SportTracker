@@ -1,0 +1,22 @@
+{% extends "main/base.html" %}
+{% block title %}Регистрация — SportTracker{% endblock %}
+{% block content %}
+  <div class="topbar"><span class="logo">SportTracker</span></div>
+
+  <div class="card">
+    <h2>Создай аккаунт</h2>
+    <form method="post">
+      {% csrf_token %}
+      {% if form.errors %}<div class="errors">Проверь поля: логин может быть занят, а пароли должны совпадать.</div>{% endif %}
+      {% for field in form %}
+        <div class="field">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+          {% if field.help_text %}<span class="helptext">{{ field.help_text }}</span>{% endif %}
+        </div>
+      {% endfor %}
+      <button type="submit">Зарегистрироваться</button>
+    </form>
+    <a class="alt-link" href="{% url 'login' %}">Уже зарегистрированы? Войти</a>
+  </div>
+{% endblock %}

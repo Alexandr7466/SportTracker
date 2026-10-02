@@ -1,0 +1,25 @@
+{# Берём общий каркас страницы #}
+{% extends "main/base.html" %}
+
+{% block title %}Вход — SportTracker{% endblock %}
+
+{% block content %}
+  <div class="topbar"><span class="logo">SportTracker</span></div>
+
+  <div class="card">
+    <h2>Вход</h2>
+
+    <form method="post">
+      {% csrf_token %}
+      {% if form.errors %}<div class="errors">Неверный логин или пароль.</div>{% endif %}
+      {% for field in form %}
+        <div class="field">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+        </div>
+      {% endfor %}
+      <button type="submit">Войти</button>
+    </form>
+    <a class="alt-link" href="{% url 'register' %}">Нет аккаунта? Зарегистрироваться</a>
+  </div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "main/base.html" %}
+
+{% block title %}Анкета — SportTracker{% endblock %}
+
+{% block content %}
+  <div class="topbar"><span class="logo">SportTracker</span></div>
+ 
+
+  <div class="card">
+
+    <h2>Расскажи о себе</h2>
+
+    <p class="hint" style="margin-bottom:18px">По этим данным сайт посчитает твою норму БЖУ и составит рацион из тех продуктов, которые у тебя есть.</p>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.errors }}
+      <div class="field">
+        <label for="{{ form.age.id_for_label }}">{{ form.age.label }}</label>
+        {{ form.age }}
+      </div>
+      <div class="field">
+        <label for="{{ form.gender.id_for_label }}">{{ form.gender.label }}</label>
+        {{ form.gender }}
+      </div>
+      <div class="field">
+        <label for="{{ form.weight.id_for_label }}">{{ form.weight.label }}</label>
+        {{ form.weight }}
+      </div>
+      <div class="field">
+        <label for="{{ form.goal.id_for_label }}">{{ form.goal.label }}</label>
+        {{ form.goal }}
+      </div>
+      <div class="field">
+        <label>{{ form.products.label }}</label>
+        {{ form.products }}
+      </div>
+      <button type="submit">Составить программу</button>
+    </form>
+  </div>
+{% endblock %}

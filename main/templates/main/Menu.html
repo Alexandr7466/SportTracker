@@ -1,0 +1,49 @@
+{% extends "main/base.html" %}
+
+{% block title %}Меню — SportTracker{% endblock %}
+
+{% block content %}
+  <div class="topbar"><span class="logo">SportTracker</span></div>
+
+  <div class="card">
+    <h2>Мои данные</h2>
+    <p class="hint" style="margin-bottom:18px">После сохранения рацион и тренировка пересчитаются. Если сменить цель, прогресс начнётся заново от текущего веса.</p>
+    <form method="post">
+      {% csrf_token %}
+      <div class="field">
+        <label for="{{ form.age.id_for_label }}">{{ form.age.label }}</label>
+        {{ form.age }}
+      </div>
+      {# Поле пола #}
+      <div class="field">
+        {# Подпись #}
+        <label for="{{ form.gender.id_for_label }}">{{ form.gender.label }}</label>
+        {# Выбор пола #}
+        {{ form.gender }}
+      </div>
+      {# Поле веса #}
+      <div class="field">
+        {# Подпись #}
+        <label for="{{ form.weight.id_for_label }}">{{ form.weight.label }}</label>
+        {# Ввод веса #}
+        {{ form.weight }}
+      </div>
+      {# Поле цели #}
+      <div class="field">
+        {# Подпись #}
+        <label for="{{ form.goal.id_for_label }}">{{ form.goal.label }}</label>
+        {# Выбор цели #}
+        {{ form.goal }}
+      </div>
+      {# Список продуктов #}
+      <div class="field">
+        {# Подпись к списку #}
+        <label>{{ form.products.label }}</label>
+        {{ form.products }}
+      </div>
+      <button type="submit">Сохранить изменения</button>
+    </form>
+    <a class="alt-link" href="{% url 'home' %}">Вернуться в профиль</a>
+    <p style="margin-top:20px"><a class="btn btn-secondary" href="{% url 'logout' %}">Выйти из аккаунта</a></p>
+  </div>
+{% endblock %}

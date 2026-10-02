@@ -1,0 +1,85 @@
+{% extends "main/base.html" %}
+
+{% block title %}Мой профиль — SportTracker{% endblock %}
+
+{% block content %}
+  <div class="topbar">
+    <span class="logo">SportTracker</span>
+    <a class="menu-btn" href="{% url 'menu' %}" aria-label="Открыть меню">
+      <span></span><span></span><span></span>
+    </a>
+  </div>
+
+  <div class="card progress">
+    <div class="progress-value {% if change > 0 %}up{% elif change < 0 %}down{% endif %}">
+      {{ change_sign }}{{ change }} кг
+    </div>
+    <div class="progress-note">за {{ months }} {{ months_word }} · сейчас {{ profile.weight }} кг</div>
+  </div>
+
+  {% if needs_weigh_in %}
+    <div class="card reminder">
+      <h2>Прошёл месяц — взвесься</h2>
+      <p class="hint" style="margin-bottom:14px">Введи новый вес</p>
+
+      <form method="post">
+        {% csrf_token %}
+        <div class="field">
+          <label for="{{ weight_form.weight.id_for_label }}">{{ weight_form.weight.label }}</label>
+          {{ weight_form.weight }}
+        </div>
+
+        <button type="submit">Сохранить вес</button>
+      </form>
+    </div>
+  {% endif %}
+
+  <div class="card">
+    <h2>Питание на день</h2>
+    <div class="macros">
+      <div><div class="macro-value">{{ targets.calories }}</div><div class="macro-label">ккал</div></div>
+      <div><div class="macro-value">{{ targets.protein }} г</div><div class="macro-label">белки</div></div>
+      <div><div class="macro-value">{{ targets.fat }} г</div><div class="macro-label">жиры</div></div>
+      <div><div class="macro-value">{{ targets.carbs }} г</div><div class="macro-label">углеводы</div></div>
+    </div>
+
+    {% if ration %}
+      <table>
+        <tr>
+          <th>Продукт</th>
+          <th class="num">Граммы</th>
+          <th class="num">Ккал</th>
+        </tr>
+        {% for row in ration %}
+          <tr>
+            <td>{{ row.name }}</td>
+            <td class="num">{{ row.grams }}</td>
+            {# скоко это в калориях #}
+            <td class="num">{{ row.calories }}</td>
+          </tr>
+        {% endfor %}
+        <tr>
+          <td><strong>Итого</strong></td>
+          <td class="num">Б {{ total.protein }} · Ж {{ total.fat }} · У {{ total.carbs }}</td>
+          <td class="num"><strong>{{ total.calories }}</strong></td>
+        </tr>
+      </table>
+      <p class="hint" style="margin-top:14px">Это количество на весь день — раздели его на 3–4 приёма пищи. Вес продуктов указан в сыром виде.</p>
+    {% else %}
+      <p class="hint">Рацион пока пустой. Открой меню и отметь продукты, которые у тебя есть.</p>
+    {% endif %}
+  </div>
+
+  <div class="card">
+    <h2>Тренировка фулл-боди · 3 раза в неделю</h2>
+    <ol class="workout">
+      {% for name, sets, note in workout %}
+        <li>
+          <div>{{ name }} — {{ sets }}</div>
+          <div class="hint">{{ note }}</div>
+        </li>
+      {% endfor %}
+    </ol>
+    <p class="hint" style="margin-top:14px">Тренируйся через день, например понедельник, среда, пятница.</p>
+  </div>
+{% endblock %}
